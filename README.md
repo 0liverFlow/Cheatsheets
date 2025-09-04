@@ -1,2 +1,2 @@
 # Cheatsheets
-A collection of cheatsheets
+A collection of personal cheatsheets
