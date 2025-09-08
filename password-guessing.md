@@ -552,7 +552,7 @@ kerbrute bruteuser --dc 10.10.10.10 -d <domain> '<passwords.txt>' '<user>'
 
 #### Password spraying
 ```
-kerbrute passwordspray --dc 10.10.10.10 -d <domain> '<user>' <password>
+kerbrute passwordspray --dc 10.10.10.10 -d <domain> '<user.txt>' <password>
 ```
 
 #### Read username:password combos from a file or stdin and test them
