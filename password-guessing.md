@@ -187,9 +187,10 @@ hydra -l '<email>' -P '<passwords.txt>' 10.10.10.10 smtp
 
 ### SNMP
 ```
-hydra -l '<email>' -P '<passwords.txt>' 10.10.10.10 snmp
+hydra -l '<user>' -P '<passwords.txt>' 10.10.10.10 snmp
 ```
 >  The command above will not work for SNMPv3 because SNMPv3 uses username and password for authentication, unlike SNMPv1 and SNMPv2 which rely on community strings.
+> You can also use onesixtyone as follow: onesixtyone -c </usr/share/seclists/Discovery/SNMP/common-snmp-community-strings.txt> 10.10.10.10
 
 ### SSH
 ```
