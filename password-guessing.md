@@ -196,7 +196,7 @@ Refer to this command if you want to use `SNMPv3` :
 hydra -l '<user>' -P '<passwords.txt>' -m:3:MD5 10.10.10.10 snmp
 ```
 > 1. The command above will perform a dictionary attack using the `AuthNoPriv` security level. Hydra SNMPv3 module doesn't support encryption. For more information, run `hydra snmp -U`
-> 2. Furthermore, note that SNMPv3 module is still in beta state in hydra. Hence, it may not work properly. A better alternative will be `[snmpwn](https://github.com/hatlord/snmpwn)`
+> 2. Furthermore, note that SNMPv3 module is still in beta state in hydra. Hence, it may not work properly. A better alternative will be [snmpwn](https://github.com/hatlord/snmpwn)
 
 ### SSH
 ```
