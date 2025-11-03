@@ -191,11 +191,12 @@ hydra  -P '<snmp-community-strings.txt>' 10.10.10.10 snmp
 ```
 >  The command above will not work for SNMPv3 because SNMPv3 uses username and password for authentication, unlike SNMPv1 and SNMPv2 which rely on community strings.
 Refer to this command for `SNMPv3` :
+#### SNMPv3 dictionary attack
 ```
 hydra -l '<user>' -P '<passwords.txt>' -m:3:MD5 10.10.10.10 snmp
 ```
-> 1. This will perform a dicitonary attack using the `AuthNoPriv` security level. Furthermore, The SNMPv3 module so far only support authentication (md5/sha), not yet encryption. For more information, run `hydra snmp -U`
-> 2. Note that the SNMPv3 module is still in beta state in hydra. Hence, it may not work properly. A better alternative will be `[snmpwn](https://github.com/hatlord/snmpwn)`
+> 1. The command above will perform a dictionary attack using the `AuthNoPriv` security level. The SNMPv3 module only support authentication (md5/sha) so far, not yet encryption. For more information, run `hydra snmp -U`
+> 2. Furthermore, note that the SNMPv3 module is still in beta state in hydra. Hence, it may not work properly. A better alternative will be `[snmpwn](https://github.com/hatlord/snmpwn)`
 
 ### SSH
 ```
